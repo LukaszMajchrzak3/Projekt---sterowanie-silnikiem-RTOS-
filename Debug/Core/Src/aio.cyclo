@@ -1,0 +1,2 @@
+../Core/Src/aio.c:38:7:VOLTAGE_DIVIDER_Read_R_DOWM	2
+../Core/Src/aio.c:53:7:VOLTAGE_DIVIDER_Read_R_UP	1
