@@ -79,6 +79,13 @@ const osThreadAttr_t lcd_text_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityRealtime7,
 };
+/* Definitions for diode_control */
+osThreadId_t diode_controlHandle;
+const osThreadAttr_t diode_control_attributes = {
+  .name = "diode_control",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* USER CODE BEGIN PV */
 
 int pot1_mV = 0;
@@ -97,6 +104,9 @@ int pwm_level = 400;
 int brake_dyn = 1;
 int en_brake = 0;
 int direction = 0;
+int ref_vel_from_key = 0;
+int change_refvel_key = 0;
+int was_clicked=0;
 
 int was_reached = 0;
 
@@ -133,6 +143,7 @@ static void MX_TIM1_Init(void);
 void start_freq_meas(void *argument);
 void start_motor_control(void *argument);
 void start_lcd_work(void *argument);
+void start_diode_contr(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -184,22 +195,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if((charTable[0] == 'D') & (charTable[1] == 'I') & (charTable[2] == 'R') & (charTable[3] == '_') & (charTable[4] == 'C') & (charTable[5] == 'L') & (charTable[6] == 'K') & (charTable[7] == 'W') & (charTable[8] == 'I') & (charTable[9] == 'S'))
 	{
 		direction = 0;
-//		HAL_GPIO_WritePin(DIRECTION_CTRL_GPIO_Port, DIRECTION_CTRL_Pin, GPIO_PIN_RESET);
-//		sprintf(single_message_response, "Kierunek obrotow: przeciwny do wsk. zegara\r\n");
 		sprintf(single_message_response, "Zmiana kierunku\r\n");
 		HAL_UART_Transmit(&huart2, (uint8_t*)single_message_response, strlen(single_message_response), 50000);
 	}
 	if((charTable[0] == 'D') & (charTable[1] == 'I') & (charTable[2] == 'R') & (charTable[3] == '_') & (charTable[4] == 'C') & (charTable[5] == 'N') & (charTable[6] == 'T') & (charTable[7] == 'R') & (charTable[8] == 'C') & (charTable[9] == 'L'))
 	{
 		direction = 1;
-//		HAL_GPIO_WritePin(DIRECTION_CTRL_GPIO_Port, DIRECTION_CTRL_Pin, GPIO_PIN_SET);
-//		sprintf(single_message_response, "Kierunek obrotow: zgodny ze wsk. zegara\r\n");
 		sprintf(single_message_response, "Zmiana kierunku\r\n");
-
 		HAL_UART_Transmit(&huart2, (uint8_t*)single_message_response, strlen(single_message_response), 50000);
-
 	}
-	//sprintf(single_message_received, "");
+	if((charTable[0] == 'S') & (charTable[1] == 'E') & (charTable[2] == 'T') & (charTable[3] == '_') & (charTable[4] == 'R') & (charTable[5] == 'E') & (charTable[6] == 'F') & (charTable[7] == 'V') & (charTable[8] == 'E') & (charTable[9] == 'L'))
+	{
+		change_refvel_key = 1;
+		sprintf(single_message_response, "Ustawianie predkosci\r\n");
+		HAL_UART_Transmit(&huart2, (uint8_t*)single_message_response, strlen(single_message_response), 50000);
+	}
 }
 
 
@@ -300,6 +310,9 @@ int main(void)
 
   /* creation of lcd_text */
   lcd_textHandle = osThreadNew(start_lcd_work, NULL, &lcd_text_attributes);
+
+  /* creation of diode_control */
+  diode_controlHandle = osThreadNew(start_diode_contr, NULL, &diode_control_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -771,10 +784,11 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, A0_Pin|A1_Pin|A2_Pin|BRAKE_DYN_Pin
-                          |BRAKE_EN_Pin|D8_Pin, GPIO_PIN_RESET);
+                          |BRAKE_EN_Pin|D8_Pin|RED_DIODE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, A3_Pin|PWM_SIGNAL_Pin|DIRECTION_CTRL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, A3_Pin|GREEN_DIODE_Pin|BLUE_DIODE_Pin|PWM_SIGNAL_Pin
+                          |DIRECTION_CTRL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -789,8 +803,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : A0_Pin A1_Pin A2_Pin D8_Pin */
-  GPIO_InitStruct.Pin = A0_Pin|A1_Pin|A2_Pin|D8_Pin;
+  /*Configure GPIO pins : A0_Pin A1_Pin A2_Pin D8_Pin
+                           RED_DIODE_Pin */
+  GPIO_InitStruct.Pin = A0_Pin|A1_Pin|A2_Pin|D8_Pin
+                          |RED_DIODE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -803,12 +819,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : A3_Pin PWM_SIGNAL_Pin */
-  GPIO_InitStruct.Pin = A3_Pin|PWM_SIGNAL_Pin;
+  /*Configure GPIO pins : BUTTON_3_Pin BUTTON_2_Pin BUTTON_1_Pin */
+  GPIO_InitStruct.Pin = BUTTON_3_Pin|BUTTON_2_Pin|BUTTON_1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : A3_Pin GREEN_DIODE_Pin BLUE_DIODE_Pin PWM_SIGNAL_Pin */
+  GPIO_InitStruct.Pin = A3_Pin|GREEN_DIODE_Pin|BLUE_DIODE_Pin|PWM_SIGNAL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : BUTTON_4_Pin */
+  GPIO_InitStruct.Pin = BUTTON_4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BUTTON_4_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : DIRECTION_CTRL_Pin */
   GPIO_InitStruct.Pin = DIRECTION_CTRL_Pin;
@@ -865,6 +893,7 @@ void start_freq_meas(void *argument)
 					change_operation = 0;
 					cur_period = timer_val;
 					freq = 1000000/cur_period;
+					vel = freq*60/4;
 					osDelay(1);
 				}
 			}
@@ -956,32 +985,30 @@ void start_lcd_work(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  if(brake_dyn == 1)
+	  if((brake_dyn == 1) & (change_refvel_key == 0))
 	  {
 		  lcd_clear();
 		  lcd_put_cur(0, 0);
 		  lcd_send_string("HAMOWANIE");
 		  lcd_put_cur(1, 0);
 		  lcd_send_string("DYNAMICZNE!");
-		  timer_val = 0;
 		  osDelay(10);
 	  }
-	  else if(en_brake == 1)
+	  else if((en_brake == 1) & (change_refvel_key == 0))
 	  {
 		  lcd_clear();
 		  lcd_put_cur(0, 0);
 		  lcd_send_string("HAMOWANIE");
 		  lcd_put_cur(1, 0);
 		  lcd_send_string("AKTYWNE!");
-		  timer_val = 0;
 		  osDelay(10);
 	  }
-	  else if((brake_dyn == 0) & (en_brake == 0))
+	  else if((brake_dyn == 0) & (en_brake == 0) & (change_refvel_key == 0))
 	  {
 			lcd_clear();
 			lcd_put_cur(0, 0);
 			lcd_send_string("Predkosc:");
-			vel = freq*60/4;
+//			vel = freq*60/4;
 			uart_buf_len = sprintf(led_buf, "%uRPM",vel);
 			lcd_send_string(led_buf);
 			lcd_put_cur(1, 0);
@@ -991,8 +1018,86 @@ void start_lcd_work(void *argument)
 			lcd_send_string(led_buf);
 			osDelay(750);
 	  }
+	  else if(change_refvel_key == 1)
+	  {
+		  lcd_clear();
+		  lcd_put_cur(0, 0);
+		  lcd_send_string("Obecna pr. ref.:");
+		  lcd_put_cur(1, 0);
+		  uart_buf_len = sprintf(led_buf, "%iRPM",ref_vel_from_key);
+		  lcd_send_string(led_buf);
+
+		  if((HAL_GPIO_ReadPin(BUTTON_1_GPIO_Port, BUTTON_1_Pin) == GPIO_PIN_RESET) & (was_clicked == 0))
+		  {
+			  ref_vel_from_key = ref_vel_from_key + 1;
+			  was_clicked = 1;
+		  }
+		  else if((HAL_GPIO_ReadPin(BUTTON_2_GPIO_Port, BUTTON_2_Pin) == GPIO_PIN_RESET) & (was_clicked == 0))
+		  {
+			  ref_vel_from_key = ref_vel_from_key + 50;
+			  was_clicked = 1;
+		  }
+		  else if((HAL_GPIO_ReadPin(BUTTON_3_GPIO_Port, BUTTON_3_Pin) == GPIO_PIN_RESET) & (was_clicked == 0))
+		  {
+			  ref_vel_from_key = ref_vel_from_key - 20;
+			  was_clicked = 1;
+		  }
+		  else if(HAL_GPIO_ReadPin(BUTTON_4_GPIO_Port, BUTTON_4_Pin) == GPIO_PIN_RESET)
+		  {
+			  ref_vel = ref_vel_from_key;
+			  change_refvel_key = 0;
+		  }
+		  else
+		  {
+			  was_clicked = 0;
+		  }
+
+		  osDelay(100);
+	  }
   }
   /* USER CODE END start_lcd_work */
+}
+
+/* USER CODE BEGIN Header_start_diode_contr */
+/**
+* @brief Function implementing the diode_control thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_start_diode_contr */
+void start_diode_contr(void *argument)
+{
+  /* USER CODE BEGIN start_diode_contr */
+  /* Infinite loop */
+  for(;;)
+  {
+	  if((vel < 1000) & (brake_dyn == 0) & (en_brake == 0))
+	  {
+		  HAL_GPIO_WritePin(RED_DIODE_GPIO_Port, RED_DIODE_Pin, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(BLUE_DIODE_GPIO_Port, BLUE_DIODE_Pin, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(GREEN_DIODE_GPIO_Port, GREEN_DIODE_Pin, GPIO_PIN_RESET);
+	  }
+	  else if((vel >= 1000) & (vel < 2500) & (brake_dyn == 0) & (en_brake == 0))
+	  {
+		  HAL_GPIO_WritePin(RED_DIODE_GPIO_Port, RED_DIODE_Pin, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(BLUE_DIODE_GPIO_Port, BLUE_DIODE_Pin, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(GREEN_DIODE_GPIO_Port, GREEN_DIODE_Pin, GPIO_PIN_RESET);
+	  }
+	  else if((vel >= 2500) & (brake_dyn == 0) & (en_brake == 0))
+	  {
+		  HAL_GPIO_WritePin(RED_DIODE_GPIO_Port, RED_DIODE_Pin, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(BLUE_DIODE_GPIO_Port, BLUE_DIODE_Pin, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(GREEN_DIODE_GPIO_Port, GREEN_DIODE_Pin, GPIO_PIN_SET);
+	  }
+	  else if((brake_dyn == 1) || (en_brake == 1))
+	  {
+		  HAL_GPIO_WritePin(RED_DIODE_GPIO_Port, RED_DIODE_Pin, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(BLUE_DIODE_GPIO_Port, BLUE_DIODE_Pin, GPIO_PIN_RESET);
+		  HAL_GPIO_WritePin(GREEN_DIODE_GPIO_Port, GREEN_DIODE_Pin, GPIO_PIN_RESET);
+	  }
+    osDelay(1);
+  }
+  /* USER CODE END start_diode_contr */
 }
 
 /**
