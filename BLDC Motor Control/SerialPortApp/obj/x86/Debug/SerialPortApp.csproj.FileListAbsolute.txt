@@ -1,0 +1,20 @@
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\bin\Debug\SerialPortApp.exe.config
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\bin\Debug\SerialPortApp.exe
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\bin\Debug\SerialPortApp.pdb
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\obj\x86\Debug\SerialPortApp.csproj.AssemblyReference.cache
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\obj\x86\Debug\SerialPortApp.MainForm.resources
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\obj\x86\Debug\SerialPortApp.Properties.Resources.resources
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\obj\x86\Debug\SerialPortApp.csproj.GenerateResource.cache
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\obj\x86\Debug\SerialPortApp.csproj.CoreCompileInputs.cache
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\obj\x86\Debug\SerialPortApp.exe
+C:\Users\Dawid\source\repos\DOT_NET_APP_DEMO-main\SerialPortApp\obj\x86\Debug\SerialPortApp.pdb
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\obj\x86\Debug\SerialPortApp.csproj.AssemblyReference.cache
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\obj\x86\Debug\SerialPortApp.MainForm.resources
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\obj\x86\Debug\SerialPortApp.Properties.Resources.resources
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\obj\x86\Debug\SerialPortApp.csproj.GenerateResource.cache
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\obj\x86\Debug\SerialPortApp.csproj.CoreCompileInputs.cache
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\bin\Debug\BLDC Motor Control.exe.config
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\bin\Debug\BLDC Motor Control.exe
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\bin\Debug\BLDC Motor Control.pdb
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\obj\x86\Debug\BLDC Motor Control.exe
+C:\Users\Dawid\source\repos\BLDC Motor Control\SerialPortApp\obj\x86\Debug\BLDC Motor Control.pdb
