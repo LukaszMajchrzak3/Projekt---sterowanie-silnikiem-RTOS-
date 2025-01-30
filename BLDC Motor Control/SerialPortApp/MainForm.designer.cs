@@ -32,13 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.serialSettingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.config = new System.Windows.Forms.TabPage();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioActBrake = new System.Windows.Forms.RadioButton();
-            this.radioDynBrake = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioCounterClockwise = new System.Windows.Forms.RadioButton();
-            this.radioClockwise = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -74,11 +67,16 @@
             this.rxEnableCheckBox = new System.Windows.Forms.CheckBox();
             this.btnClear = new System.Windows.Forms.Button();
             this.tbDataReceive = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioClockwise = new System.Windows.Forms.RadioButton();
+            this.radioCounterClockwise = new System.Windows.Forms.RadioButton();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radioDynBrake = new System.Windows.Forms.RadioButton();
+            this.radioActBrake = new System.Windows.Forms.RadioButton();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.radioManVel = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.serialSettingsBindingSource)).BeginInit();
             this.config.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarVel)).BeginInit();
@@ -88,6 +86,9 @@
             this.groupBox_exceptions.SuspendLayout();
             this.groupBox_transmit.SuspendLayout();
             this.groupBox_receive.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // config
@@ -105,91 +106,6 @@
             this.config.Size = new System.Drawing.Size(616, 552);
             this.config.TabIndex = 3;
             this.config.Text = "Silnik";
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.groupBox2);
-            this.groupBox5.Controls.Add(this.groupBox1);
-            this.groupBox5.Location = new System.Drawing.Point(367, 89);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(244, 232);
-            this.groupBox5.TabIndex = 22;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "groupBox5";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.radioActBrake);
-            this.groupBox2.Controls.Add(this.radioDynBrake);
-            this.groupBox2.Location = new System.Drawing.Point(7, 142);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(209, 81);
-            this.groupBox2.TabIndex = 19;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Sterowanie Hamowaniem";
-            // 
-            // radioActBrake
-            // 
-            this.radioActBrake.AutoSize = true;
-            this.radioActBrake.Location = new System.Drawing.Point(13, 50);
-            this.radioActBrake.Margin = new System.Windows.Forms.Padding(4);
-            this.radioActBrake.Name = "radioActBrake";
-            this.radioActBrake.Size = new System.Drawing.Size(153, 20);
-            this.radioActBrake.TabIndex = 9;
-            this.radioActBrake.TabStop = true;
-            this.radioActBrake.Text = "Hamowanie Aktywne";
-            this.radioActBrake.UseVisualStyleBackColor = true;
-            this.radioActBrake.CheckedChanged += new System.EventHandler(this.radioActBrake_CheckedChanged);
-            // 
-            // radioDynBrake
-            // 
-            this.radioDynBrake.AutoSize = true;
-            this.radioDynBrake.Location = new System.Drawing.Point(13, 21);
-            this.radioDynBrake.Margin = new System.Windows.Forms.Padding(4);
-            this.radioDynBrake.Name = "radioDynBrake";
-            this.radioDynBrake.Size = new System.Drawing.Size(177, 20);
-            this.radioDynBrake.TabIndex = 8;
-            this.radioDynBrake.TabStop = true;
-            this.radioDynBrake.Text = "Hamowanie Dynamiczne";
-            this.radioDynBrake.UseVisualStyleBackColor = true;
-            this.radioDynBrake.CheckedChanged += new System.EventHandler(this.radioDynBrake_CheckedChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.radioCounterClockwise);
-            this.groupBox1.Controls.Add(this.radioClockwise);
-            this.groupBox1.Location = new System.Drawing.Point(7, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(209, 101);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Sterowanie Kierunkiem ruchu";
-            // 
-            // radioCounterClockwise
-            // 
-            this.radioCounterClockwise.AutoSize = true;
-            this.radioCounterClockwise.Location = new System.Drawing.Point(19, 64);
-            this.radioCounterClockwise.Margin = new System.Windows.Forms.Padding(4);
-            this.radioCounterClockwise.Name = "radioCounterClockwise";
-            this.radioCounterClockwise.Size = new System.Drawing.Size(139, 20);
-            this.radioCounterClockwise.TabIndex = 3;
-            this.radioCounterClockwise.TabStop = true;
-            this.radioCounterClockwise.Text = "Counter-Clockwise";
-            this.radioCounterClockwise.UseVisualStyleBackColor = true;
-            this.radioCounterClockwise.CheckedChanged += new System.EventHandler(this.radioCounterClockwise_CheckedChanged);
-            // 
-            // radioClockwise
-            // 
-            this.radioClockwise.AutoSize = true;
-            this.radioClockwise.Location = new System.Drawing.Point(19, 35);
-            this.radioClockwise.Margin = new System.Windows.Forms.Padding(4);
-            this.radioClockwise.Name = "radioClockwise";
-            this.radioClockwise.Size = new System.Drawing.Size(89, 20);
-            this.radioClockwise.TabIndex = 2;
-            this.radioClockwise.TabStop = true;
-            this.radioClockwise.Text = "Clockwise";
-            this.radioClockwise.UseVisualStyleBackColor = true;
-            this.radioClockwise.CheckedChanged += new System.EventHandler(this.radioClockwise_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -215,6 +131,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.radioManVel);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.trackBarVel);
             this.groupBox3.Controls.Add(this.label2);
@@ -222,7 +139,7 @@
             this.groupBox3.Controls.Add(this.textBoxSetVel);
             this.groupBox3.Location = new System.Drawing.Point(25, 92);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(261, 259);
+            this.groupBox3.Size = new System.Drawing.Size(336, 259);
             this.groupBox3.TabIndex = 20;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Sterowanie prędkością";
@@ -254,7 +171,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(52, 39);
+            this.label2.Location = new System.Drawing.Point(52, 42);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(140, 16);
@@ -263,7 +180,7 @@
             // 
             // buttonSetVel
             // 
-            this.buttonSetVel.Location = new System.Drawing.Point(73, 104);
+            this.buttonSetVel.Location = new System.Drawing.Point(78, 104);
             this.buttonSetVel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSetVel.Name = "buttonSetVel";
             this.buttonSetVel.Size = new System.Drawing.Size(92, 28);
@@ -274,10 +191,10 @@
             // 
             // textBoxSetVel
             // 
-            this.textBoxSetVel.Location = new System.Drawing.Point(48, 74);
+            this.textBoxSetVel.Location = new System.Drawing.Point(55, 74);
             this.textBoxSetVel.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxSetVel.Name = "textBoxSetVel";
-            this.textBoxSetVel.Size = new System.Drawing.Size(144, 22);
+            this.textBoxSetVel.Size = new System.Drawing.Size(137, 22);
             this.textBoxSetVel.TabIndex = 5;
             this.textBoxSetVel.Text = "0300";
             // 
@@ -602,6 +519,103 @@
             this.tbDataReceive.TabIndex = 13;
             this.tbDataReceive.TextChanged += new System.EventHandler(this.tbDataReceive_TextChanged);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radioCounterClockwise);
+            this.groupBox1.Controls.Add(this.radioClockwise);
+            this.groupBox1.Location = new System.Drawing.Point(7, 21);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(209, 101);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Sterowanie Kierunkiem ruchu";
+            // 
+            // radioClockwise
+            // 
+            this.radioClockwise.AutoSize = true;
+            this.radioClockwise.Location = new System.Drawing.Point(13, 36);
+            this.radioClockwise.Margin = new System.Windows.Forms.Padding(4);
+            this.radioClockwise.Name = "radioClockwise";
+            this.radioClockwise.Size = new System.Drawing.Size(89, 20);
+            this.radioClockwise.TabIndex = 2;
+            this.radioClockwise.TabStop = true;
+            this.radioClockwise.Text = "Clockwise";
+            this.radioClockwise.UseVisualStyleBackColor = true;
+            this.radioClockwise.CheckedChanged += new System.EventHandler(this.radioClockwise_CheckedChanged);
+            // 
+            // radioCounterClockwise
+            // 
+            this.radioCounterClockwise.AutoSize = true;
+            this.radioCounterClockwise.Location = new System.Drawing.Point(13, 64);
+            this.radioCounterClockwise.Margin = new System.Windows.Forms.Padding(4);
+            this.radioCounterClockwise.Name = "radioCounterClockwise";
+            this.radioCounterClockwise.Size = new System.Drawing.Size(139, 20);
+            this.radioCounterClockwise.TabIndex = 3;
+            this.radioCounterClockwise.TabStop = true;
+            this.radioCounterClockwise.Text = "Counter-Clockwise";
+            this.radioCounterClockwise.UseVisualStyleBackColor = true;
+            this.radioCounterClockwise.CheckedChanged += new System.EventHandler(this.radioCounterClockwise_CheckedChanged);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.radioActBrake);
+            this.groupBox2.Controls.Add(this.radioDynBrake);
+            this.groupBox2.Location = new System.Drawing.Point(7, 142);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(209, 81);
+            this.groupBox2.TabIndex = 19;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Sterowanie Hamowaniem";
+            // 
+            // radioDynBrake
+            // 
+            this.radioDynBrake.AutoSize = true;
+            this.radioDynBrake.Location = new System.Drawing.Point(13, 21);
+            this.radioDynBrake.Margin = new System.Windows.Forms.Padding(4);
+            this.radioDynBrake.Name = "radioDynBrake";
+            this.radioDynBrake.Size = new System.Drawing.Size(177, 20);
+            this.radioDynBrake.TabIndex = 8;
+            this.radioDynBrake.TabStop = true;
+            this.radioDynBrake.Text = "Hamowanie Dynamiczne";
+            this.radioDynBrake.UseVisualStyleBackColor = true;
+            this.radioDynBrake.CheckedChanged += new System.EventHandler(this.radioDynBrake_CheckedChanged);
+            // 
+            // radioActBrake
+            // 
+            this.radioActBrake.AutoSize = true;
+            this.radioActBrake.Location = new System.Drawing.Point(13, 50);
+            this.radioActBrake.Margin = new System.Windows.Forms.Padding(4);
+            this.radioActBrake.Name = "radioActBrake";
+            this.radioActBrake.Size = new System.Drawing.Size(153, 20);
+            this.radioActBrake.TabIndex = 9;
+            this.radioActBrake.TabStop = true;
+            this.radioActBrake.Text = "Hamowanie Aktywne";
+            this.radioActBrake.UseVisualStyleBackColor = true;
+            this.radioActBrake.CheckedChanged += new System.EventHandler(this.radioActBrake_CheckedChanged);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.groupBox2);
+            this.groupBox5.Controls.Add(this.groupBox1);
+            this.groupBox5.Location = new System.Drawing.Point(367, 92);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(241, 232);
+            this.groupBox5.TabIndex = 22;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Ustawienia";
+            // 
+            // radioManVel
+            // 
+            this.radioManVel.AutoSize = true;
+            this.radioManVel.Location = new System.Drawing.Point(210, 76);
+            this.radioManVel.Name = "radioManVel";
+            this.radioManVel.Size = new System.Drawing.Size(90, 20);
+            this.radioManVel.TabIndex = 17;
+            this.radioManVel.TabStop = true;
+            this.radioManVel.Text = "Manualne ";
+            this.radioManVel.UseVisualStyleBackColor = true;
+            this.radioManVel.CheckedChanged += new System.EventHandler(this.radioManVel_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -618,11 +632,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.serialSettingsBindingSource)).EndInit();
             this.config.ResumeLayout(false);
             this.config.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -637,6 +646,11 @@
             this.groupBox_transmit.PerformLayout();
             this.groupBox_receive.ResumeLayout(false);
             this.groupBox_receive.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -648,13 +662,9 @@
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.TabControl configTab;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton radioCounterClockwise;
-        private System.Windows.Forms.RadioButton radioClockwise;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonSetVel;
         private System.Windows.Forms.TextBox textBoxSetVel;
-        private System.Windows.Forms.RadioButton radioActBrake;
-        private System.Windows.Forms.RadioButton radioDynBrake;
         private System.Windows.Forms.TrackBar trackBarVel;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TabPage tabSerialPort;
@@ -683,10 +693,15 @@
         private System.Windows.Forms.TextBox tbDataReceive;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton radioActBrake;
+        private System.Windows.Forms.RadioButton radioDynBrake;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton radioCounterClockwise;
+        private System.Windows.Forms.RadioButton radioClockwise;
+        private System.Windows.Forms.RadioButton radioManVel;
     }
 }
 

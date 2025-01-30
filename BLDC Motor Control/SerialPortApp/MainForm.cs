@@ -356,6 +356,11 @@ namespace SerialPortApp
         private void buttonStart_Click(object sender, EventArgs e)
         {
             _spManager.Send("STARTMOTOR\r");
+            radioManVel.Checked = false;
+            radioDynBrake.Checked = false;
+            radioActBrake.Checked = false;
+            radioClockwise.Checked = false;
+            radioCounterClockwise.Checked = false;
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -371,6 +376,7 @@ namespace SerialPortApp
         private void button1_Click(object sender, EventArgs e)
         {
             _spManager.Send("VEL:" + textBoxSetVel.Text+ ";;\r");
+            radioManVel.Checked = false;
         }
 
         private void radioCounterClockwise_CheckedChanged(object sender, EventArgs e)
@@ -378,6 +384,9 @@ namespace SerialPortApp
             if (radioCounterClockwise.Checked)
             {
                 _spManager.Send("DIR_CNTRCL\r");
+                radioDynBrake.Checked = false;
+                radioActBrake.Checked = false;
+                radioClockwise.Checked = false;
             }
         }
 
@@ -386,14 +395,19 @@ namespace SerialPortApp
             if (radioDynBrake.Checked)
             {
                 _spManager.Send("BRAKE_DNMC\r");
+                radioCounterClockwise.Checked = false;
+                radioClockwise.Checked= false;
+                radioActBrake.Checked = false;
             }
         }
         private void radioActBrake_CheckedChanged(object sender, EventArgs e)
         {
             if (radioActBrake.Checked)
             {
-
                 _spManager.Send("CONTR_STOP\r");
+                radioCounterClockwise.Checked = false;
+                radioClockwise.Checked = false;
+                radioDynBrake.Checked = false;
             }
         }
 
@@ -402,6 +416,9 @@ namespace SerialPortApp
             if (radioClockwise.Checked)
             {
                 _spManager.Send("DIR_CLKWIS\r");
+                radioCounterClockwise.Checked = false;
+                radioDynBrake.Checked = false;
+                radioActBrake.Checked = false;
             }
         }
 
@@ -428,6 +445,7 @@ namespace SerialPortApp
 
         private void trackBarVel_MouseCaptureChanged(object sender, EventArgs e)
         {
+            radioManVel.Checked = false;
             if (trackBarVel.Value < 1000)
                 _spManager.Send("VEL:0" + trackBarVel.Value + ";;\r");
             else
@@ -448,6 +466,11 @@ namespace SerialPortApp
         private void label4_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void radioManVel_CheckedChanged(object sender, EventArgs e)
+        {
+            _spManager.Send("SET_REFVEL\r");
         }
     }
 }
